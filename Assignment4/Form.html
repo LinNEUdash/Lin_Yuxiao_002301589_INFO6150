@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Feedback</title>
+	<style>
+        label { float: left; width: 150px; }
+        #container { width: 700px; margin: auto; background-color: beige; }
+        main { padding: 50px; }
+        .error { color: red; display: none; }
+		#tableWrapper {
+			background-color: beige;
+            display: flex;
+            justify-content: center; /* Horizontally center the table */
+            margin: 20px 0;
+        }
+        table { width: 1300px; border-collapse: collapse; margin: 20px auto; table-layout: fixed; }
+        th, td { padding: 0px; text-align: center; word-break: break-word; border: 1px solid #ddd; }
+        th { background-color: #f2f2f2; }
+        td { background-color: #ffffff; }
+        tbody tr:nth-child(even) { background-color: #f9f9f9; }
+        tbody tr:nth-child(odd) { background-color: #ffffff; }
+        thead { position: sticky; top: 0; background-color: #e0e0e0; }
+    </style>
+</head>
+<body>
+<div id="container">
+    <main>
+        <h2>Feedback</h2>
+        <h3>Love something? Hate something? Let us know!</h3>
+        Note: Fields marked with an asterisk (*) are mandatory
+        <br><br>
+        <form method="post" id="feedbackForm" novalidate>
+            <label>Title*:</label>
+            <input type="radio" name="title" id="miss" value="miss" required="required"/>Miss
+            <input type="radio" name="title" id="mr" value="mr" required="required"/>Mr.
+            <input type="radio" name="title" id="mrs" value="mrs" required="required"/>Mrs.
+            <br><br>
+            <label for="firstName">First Name*:</label>
+            <input type="text" name="firstName" id="firstName" placeholder="First Name" />
+            <div class="error" id="error-firstName">Please enter your first name between 2-20 characters, without special characters</div>
+            <br><br>
+            
+            <label for="lastName">Last Name*:</label>
+            <input type="text" name="lastName" id="lastName" placeholder="Last Name" />
+            <div class="error" id="error-lastName">Please enter your last name between 2-20 characters, without special characters</div>
+            <br><br>
+            
+            <label for="emailId">Email Id*:</label>
+            <input type="text" name="emailId" id="emailId" placeholder="yourname@domain.com" />
+            <div class="error" id="error-emailId">Please enter a valid email address</div>
+            <br><br>
+            
+            <label for="phoneNumber">Phone Number*:</label>
+            <input type="text" name="phoneNumber" id="phoneNumber" placeholder="xxx-xxx-xxxx" />
+            <div class="error" id="error-phoneNumber">Please enter a valid phone number</div>
+            <br><br>
+            
+            <label for="zipcode">ZipCode*:</label>
+            <input type="text" name="zipcode" id="zipcode" placeholder="xxxxx" />
+            <div class="error" id="error-zipcode">Please enter a valid zipcode</div>
+            <br><br>
+             
+            <label for="streetAddress1">Street Address 1*:</label>
+            <input type="text" name="streetAddress1" id="streetAddress1" placeholder="address1" />
+            <div class="error" id="error-streetAddress1">Address should not be empty</div>
+            <br><br>
+
+            <label for="streetAddress2">Street Address 2:</label>
+            <input type="text" name="streetAddress2" id="streetAddress2" placeholder="address2" />
+            <br><br>
+
+            <label for="options">Drinks*:</label>
+            <select id="options" name="options">
+                <option value="">--Please choose a drink--</option>
+                <option value="Cappuccino">Cappuccino</option>
+                <option value="Macchiato">Macchiato</option>
+                <option value="Ristretto">Ristretto</option>
+                <option value="Americano">Americano</option>
+                <option value="Mocha">Mocha</option>
+            </select>
+            <br><br>
+
+            <div id="dynamicSection"></div>
+            <br><br>
+
+            <div id="customizationSection" style="display:none;">
+                <label for="customizationInput">Any additional customization*:</label>
+                <textarea type="text" id="customizationInput" placeholder="Write customizations or N/A if none" rows="5" cols="25"></textarea>
+                <div class="error" id="customizationError">Please write customizations or N/A if none.</div>
+            </div>
+            <br><br>
+             
+            <label for="comments">Comments*:</label>
+            <textarea name="text" id="comments" placeholder="Your comments" rows="5" cols="25"></textarea>
+            <div class="error" id="error-comments">Comments should be between 5-200 characters</div>
+            <br><br>
+
+            <button type="submit" id="submitBtn" disabled>Submit</button>
+            <button type="reset">Reset</button>
+            <br><br>
+        </form>
+
+    </main>
+	
+</div>
+
+<div id="tableWrapper">
+	<table id="submittedDataTable" style="display:none;">
+		<thead>
+			<tr>
+				<th>Title</th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Email</th>
+				<th>Phone</th>
+				<th>Zipcode</th>
+				<th>Address1</th>
+				<th>Address2</th>
+				<th>Drink</th>
+				<th>Customization</th>
+				<th>Comments</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+</div>
+
+<script>
+	var largeOrNot = '';
+    const firstName = document.getElementById("firstName");
+    const lastName = document.getElementById("lastName");
+    const emailId = document.getElementById("emailId");
+    const phoneNumber = document.getElementById("phoneNumber");
+    const zipcode = document.getElementById("zipcode");
+    const comments = document.getElementById("comments");
+    const streetAddress1 = document.getElementById("streetAddress1");
+    const customization = document.getElementById("customizationInput");
+    const options = document.getElementById('options');
+    const form = document.getElementById('feedbackForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const dynamicSection = document.getElementById('dynamicSection');
+    const customizationSection = document.getElementById('customizationSection');
+    
+
+    let isFirstNameValid, isLastNameValid, isEmailIdValid, isPhoneNumberValid, isZipcodeValid, isCommentsValid = false;
+    let isTitleValid = false; 
+    let isDrinkSelected = false; 
+
+    
+    firstName.addEventListener("input", checkValidation);
+    lastName.addEventListener("input", checkValidation);
+    emailId.addEventListener("input", checkValidation);
+    phoneNumber.addEventListener("input", checkValidation);
+    zipcode.addEventListener("input", checkValidation);
+    comments.addEventListener("input", checkValidation);
+    streetAddress1.addEventListener("input", checkValidation);
+    customization.addEventListener("input", checkValidation);
+    
+   
+    document.querySelectorAll('input[name="title"]').forEach(radio => {
+        radio.addEventListener("change", checkTitleAndDrink);
+    });
+
+    options.addEventListener('change', handleDrinkChange);
+
+   
+    function checkValidation(event) {
+        
+        const regExFirstName = /^[a-zA-Z0-9]{2,20}$/;
+        const regExLastName = /^[a-zA-Z0-9]{2,20}$/;
+        const regExEmailId = /^[a-zA-Z0-9._%+-]+@northeastern\.edu$/; 
+        const regExPhoneNumber = /^\d{3}-\d{3}-\d{4}$/;
+        const regExZipcode = /^\d{5}$/;
+        isCommentsValid = comments.value.length >= 5 && comments.value.length <= 200;
+
+        const value = event.target.value.trim();
+        const targetId = event.target.id;
+        const errorField = document.getElementById(`error-${targetId}`);
+
+        if (targetId === "firstName") {
+            isFirstNameValid = regExFirstName.test(value);
+            errorField.style.display = isFirstNameValid ? "none" : "block";
+        }
+        else if (targetId === "lastName") {
+            isLastNameValid = regExLastName.test(value);
+            errorField.style.display = isLastNameValid ? "none" : "block";
+        }
+        else if (targetId === "emailId") {
+            isEmailIdValid = regExEmailId.test(value);
+            errorField.style.display = isEmailIdValid ? "none" : "block";
+        }
+        else if (targetId === "phoneNumber") {
+            isPhoneNumberValid = regExPhoneNumber.test(value);
+            errorField.style.display = isPhoneNumberValid ? "none" : "block";
+        }
+        else if (targetId === "zipcode") {
+            isZipcodeValid = regExZipcode.test(value);
+            errorField.style.display = isZipcodeValid ? "none" : "block";
+        }
+        else if (targetId === "comments") {
+            errorField.style.display = isCommentsValid ? "none" : "block";
+        }
+        else if (targetId === "streetAddress1") {
+            isStreetAddress1 = value.length !== 0;
+            errorField.style.display = isStreetAddress1 ? "none" : "block";
+        }
+        else if (targetId === "customizationInput") {
+            const isCustomizationValid = value.length !== 0;
+            document.getElementById("customizationError").style.display = isCustomizationValid ? "none" : "block";
+        }
+
+        checkFormValidation();
+    }
+
+ 
+    function checkFormValidation() {
+        submitBtn.disabled = !(isTitleValid && isDrinkSelected && isFirstNameValid && isLastNameValid && isEmailIdValid && isPhoneNumberValid && isZipcodeValid && isCommentsValid);
+    }
+
+    
+    function checkTitleAndDrink() {
+       
+        isTitleValid = !!document.querySelector('input[name="title"]:checked');
+        
+        
+        isDrinkSelected = options.value !== '';
+        
+        checkFormValidation();
+    }
+
+    
+    function handleDrinkChange() {
+        dynamicSection.innerHTML = '';
+        customization.value = ''; 
+        customizationSection.style.display = 'none';
+
+        
+        if (options.value) {
+            dynamicSection.style.display = 'block'; 
+            const label = document.createElement('label');
+            label.innerText = `${options.value}? Large ($1 Extra)`;
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = 'dynamicCheckbox';
+
+            checkbox.addEventListener('change', function() {
+                if (checkbox.checked) {
+					largeOrNot = '(large)';
+					submitBtn.disabled = true;
+                    customizationSection.style.display = 'block'; 
+					customization.addEventListener("input", function(){
+						if (customization.value.length == 0) {
+							submitBtn.disabled = true;
+						} else {
+							checkFormValidation();
+						}
+					})
+                } else {
+					largeOrNot = ''
+                    customizationSection.style.display = 'none'; 
+                    customization.value = ''; 
+					checkFormValidation();
+                }
+            });
+
+            dynamicSection.appendChild(label);
+            dynamicSection.appendChild(checkbox);
+        } else {
+			dynamicSection.style.display = 'block';  
+	
+			const drinksLabel = document.createElement('div');
+			drinksLabel.innerText = "Please select a drink.";  
+			drinksLabel.style.color = 'red'; 
+	
+			dynamicSection.appendChild(drinksLabel);
+		}
+	
+		
+		checkTitleAndDrink();  
+        
+    }
+
+    
+    form.addEventListener("reset", function() {
+        customization.value = ''; 
+        customizationSection.style.display = 'none'; 
+        dynamicSection.style.display = 'none'; 
+		largeOrNot = '';
+    });
+
+   
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        
+        const table = document.getElementById("submittedDataTable");
+        const tbody = table.querySelector("tbody");
+
+
+        const formData = {
+            title: document.querySelector('input[name="title"]:checked')?.value || '',
+            firstName: firstName.value,
+            lastName: lastName.value,
+            emailId: emailId.value,
+            phoneNumber: phoneNumber.value,
+            zipcode: zipcode.value,
+            streetAddress1: streetAddress1.value,
+            streetAddress2: document.getElementById("streetAddress2").value || '',
+            drink: options.value + largeOrNot,
+            customization: customizationSection.style.display === "block" ? customization.value : 'N/A',
+            comments: comments.value
+        };
+
+        // Add data to table
+        const row = document.createElement("tr");
+        Object.values(formData).forEach(value => {
+            const cell = document.createElement("td");
+            cell.textContent = value;
+            row.appendChild(cell);
+        });
+        tbody.appendChild(row);
+
+        table.style.display = "table"; 
+
+        form.reset();
+        isFirstNameValid = isLastNameValid = isEmailIdValid = isPhoneNumberValid = isZipcodeValid = isCommentsValid = false;
+        customizationSection.style.display = 'none'; 
+        dynamicSection.style.display = 'none'; 
+        checkFormValidation();
+		largeOrNot = ''
+    });
+</script>
+</body>
+</html>
