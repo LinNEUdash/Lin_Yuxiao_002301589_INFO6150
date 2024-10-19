@@ -1,0 +1,113 @@
+@use "sass:math";
+.destination-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: $spacing-unit;
+  }
+  
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-unit;
+  }
+
+  .recommended-books {
+    padding: 50px 0; 
+    text-align: center;
+  
+    h2 {
+      font-size: 2.5rem;
+      margin-bottom: $spacing-unit;
+    }
+  
+    p {
+      font-size: 1.1rem;
+      margin-bottom: $spacing-unit * 2; 
+    }
+  }
+  
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-unit;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 $spacing-unit; 
+  }
+  
+  .card {
+    width: calc(33.33% - #{$spacing-unit}); 
+    box-sizing: border-box;
+    padding: $spacing-unit;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    text-align: left;
+  }
+  
+  @media (max-width: 768px) {
+    .card {
+      width: 100%; 
+    }
+  }
+  
+  .itinerary {
+    padding: 50px 0;
+    text-align: center;
+  
+    h2 {
+      font-size: 2.5rem;
+      margin-bottom: $spacing-unit;
+    }
+  
+    p {
+      font-size: 1.1rem;
+      margin-bottom: $spacing-unit * 2;
+    }
+  
+    .itinerary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: $spacing-unit;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+  
+    .itinerary-item {
+      background-color: #fff;
+      padding: $spacing-unit;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+  
+
+
+        h4 {
+        font-size: 1.5rem;
+        margin-bottom: math.div($spacing-unit, 2); 
+        }
+  
+      .itinerary-day {
+        font-weight: bold;
+        color: #ff6347;
+      }
+  
+      p {
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+    }
+  }

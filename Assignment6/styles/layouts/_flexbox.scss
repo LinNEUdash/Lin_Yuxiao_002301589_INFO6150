@@ -1,0 +1,28 @@
+.hero {
+    background-color: $primary-color;
+    color: white;
+    padding: $spacing-unit;
+    text-align: center;
+  
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+  }
+  
+  .destination-flex {
+    display: flex;
+    gap: $spacing-unit;
+    align-items: center;
+  
+    .destination-image img {
+      width: 90%;
+      margin-top: 5px;
+      border-radius: $border-radius;
+    }
+  
+    .destination-info {
+      flex: 1;
+      padding: $spacing-unit;
+    }
+  }

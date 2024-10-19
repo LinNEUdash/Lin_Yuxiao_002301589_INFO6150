@@ -1,0 +1,41 @@
+.destination-card {
+    background-color: white;
+    display: flex;
+    flex-direction: column; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-radius: $border-radius;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+  
+    &:hover {
+      transform: scale(1.05);
+    }
+  
+    .destination-image {
+        width: 100%;
+        height: 257.31px;
+        border-radius: 8px;
+    }
+  
+    .destination-title {
+        font-size: 1.5rem;
+        margin: $spacing-unit 0;
+        padding: 0 $spacing-unit;
+    }
+  
+    .destination-description {
+        flex-grow: 1;
+        padding: 0 $spacing-unit;
+        color: $dark-gray;
+    }
+  
+    .btn {
+        margin: $spacing-unit;
+        display: block;
+        text-align: center; 
+        min-height: 40px; 
+        
+    }
+  }

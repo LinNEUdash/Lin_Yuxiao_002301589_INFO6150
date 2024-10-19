@@ -1,0 +1,18 @@
+$primary-color: #ff6347;  
+$secondary-color: #2c3e50; 
+$font-stack: 'Montserrat', sans-serif;
+$spacing-unit: 20px;
+
+
+
+$light-gray: #f4f4f4;
+$dark-gray: #333;
+$border-radius: 8px;
+
+
+:root {
+    --primary-color: #{$primary-color};
+    --secondary-color: #{$secondary-color};
+    --border-radius: #{$border-radius};
+    --spacing-unit: #{$spacing-unit};
+}

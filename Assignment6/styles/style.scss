@@ -1,0 +1,16 @@
+// Importing base styles
+@import 'base/variables';
+@import 'base/reset';
+@import 'base/typography';
+
+// Importing components
+@import 'components/header';
+@import 'components/footer';
+@import 'components/destination-card';
+@import 'components/button';
+@import 'components/destination-detail';
+
+// Importing layouts
+@import 'layouts/grid';
+@import 'layouts/flexbox';
+@import 'layouts/main';

@@ -1,0 +1,28 @@
+.footer {
+    background-color: $light-gray;
+    padding: $spacing-unit 0;
+    color: $dark-gray;
+  
+    .container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: $spacing-unit;
+    }
+  
+    h4 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+  
+    .social-list {
+      display: flex;
+      gap: 10px;
+  
+      li a {
+        color: $primary-color;
+        &:hover {
+          color: darken($primary-color, 10%); 
+        }
+      }
+    }
+  }
