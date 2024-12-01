@@ -2,16 +2,15 @@ const express = require('express');
 const Job = require('../models/Job');
 const router = express.Router();
 
-// 中间件：验证用户是否为管理员
+
 const verifyAdmin = (req, res, next) => {
-  const { type } = req.user; // 假设解码后的 JWT 包含用户类型
+  const { type } = req.user; 
   if (type !== 'admin') {
     return res.status(403).json({ message: 'Access denied. Admins only.' });
   }
   next();
 };
 
-// 创建职位 API（仅管理员可访问）
 router.post('/create/job', verifyAdmin, async (req, res) => {
   const { companyName, jobTitle, description, salary } = req.body;
 

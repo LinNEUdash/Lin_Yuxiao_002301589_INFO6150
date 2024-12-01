@@ -23,13 +23,12 @@ const app = express();
 const port = process.env.PORT || 3000;
 const mongoURI = process.env.MONGODB_URI;
 
-// 中间件：解析 JWT 并附加用户信息到 req 对象
 app.use((req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1]; // 提取 Token
+  const token = req.headers['authorization']?.split(' ')[1]; 
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = decoded; // 将解码后的用户信息附加到 req 对象
+      req.user = decoded; 
     } catch (error) {
       return res.status(401).json({ message: 'Invalid token' });
     }

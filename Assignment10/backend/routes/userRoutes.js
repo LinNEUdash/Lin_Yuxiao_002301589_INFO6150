@@ -8,12 +8,10 @@ const router = express.Router();
 router.post('/register', async (req, res) => {
   const { email, password, type, fullName } = req.body;
 
-  // 确保所有字段都存在
   if (!email || !password || !type || !fullName) {
     return res.status(400).json({ message: 'All fields are required' });
   }
 
-  // 确保 type 合法
   if (!['employee', 'admin'].includes(type)) {
     return res.status(400).json({ message: 'Invalid user type. Must be "employee" or "admin".' });
   }
@@ -35,16 +33,16 @@ router.post('/register', async (req, res) => {
 
 
 router.get('/all', async (req, res) => {
-  const { page = 1, limit = 10 } = req.query; // 获取分页参数
+  const { page = 1, limit = 10 } = req.query; 
 
   try {
-    const skip = (page - 1) * limit; // 计算需要跳过的记录数
-    const users = await User.find({}, '-password') // 排除密码字段
+    const skip = (page - 1) * limit; 
+    const users = await User.find({}, '-password') 
       .skip(skip)
-      .limit(Number(limit)); // 分页查询
+      .limit(Number(limit)); 
 
-    const totalUsers = await User.countDocuments(); // 获取总记录数
-    const totalPages = Math.ceil(totalUsers / limit); // 总页数
+    const totalUsers = await User.countDocuments(); 
+    const totalPages = Math.ceil(totalUsers / limit); 
 
     res.json({
       users,
